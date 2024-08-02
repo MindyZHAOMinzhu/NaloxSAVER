@@ -77,3 +77,19 @@ Our product used frame by frame temperature detection using a pixel color to tem
 
 To address this, future work could explore training data sets to increase accuracy and reliability. This would allow for types of breathing patterns to be better handled and could decrease type II error frequency. It would also allow for better testing effectiveness and make strides towards deployment measures.
 
+
+## How to Run / Study Replication
+This section will give instructions on how users can run and setup an environment to test our product and conduct further research.
+
+### Prerequisites
+Before anything, you must make sure that you are running the correct versions of the necessary API's and libraries that we used. To do this, you should first make sure that your coding IDE is fully up to date and that your laptop is capable of running and performing computations on multiple cameras at the same time. This experiment was only able to be ran on Windows 11 devices (likely Windows 10 as well) and was ran on intel i7 10th and 9th gen mobile processors. You must also have Python 3.10.0 or newer to run this project. Future Python versions may not be supported, but this is unlikely for a long time. 
+
+Once you are sure that your machine is capable of running this experiment, make sure that you are in the same working directory as this project and make sure that the selected interpreter is the correct python version. Also, make sure that you have added python to your environment PATH variables. There are many tutorials online on how to do this, this is the one we used: https://realpython.com/add-python-to-path/. Once this step is completed, you can run the requirements.txt file in the terminal with this command: "$ pip install -r requirements.txt". There may be some complications, I suggest ChatGPT if there are any weird errors as they may be specific to your computer and file structure. 
+
+### Camera Setup
+Our product uses a Hikmicro Pocket2 thermal infrared camera and a 1080p RGB webcamera that both plug into our devices VIA USB. This connection allows us to stream live footage from both of these cameras simultaneously, and overlay them correctly. In order to replicate our study, you should make sure that the cameras are properly cropped and are displaying the exact same footage. You can do this by running our "camera_fit_test.py" file. You will most definitely need to make some adjustments because while the thermal camera will be easy to find online and to purchase, the RGB webcamera that we used is old and out of date. 
+
+In order to adjust your cameras (which should be in a static location so that neither of them move at all) upon running the camera fit test file and to have the exact same cropped live footage, first you need to make sure that the camera indices are correct. These will be either 0, 1, or 2 (maybe 3) and you can be assisted in finding these using "index_locator.py". Once you have adjusted the variables to display proper camera overlay, you can copy these variables into "app.py" and run the file. 
+
+### Running our Experiment
+Running our experiment is simple, once the app file is ran, you will see a locally hosted link in your terminal, usually pointing to an IP address. It could look as simple as this: "https://5000" but may vary from device to device. Once you follow this link in a browser of your choosing (we found firefox to work most smoothly), you will be greeted with our user interface and the live footage of yourself. From here, note that holding your breath for 7 seconds should detect an overdose. If an overdose is detected, you can press the reset button at the bottom of the screen to revert the program back to its original state. Our experiment tested the effectiveness of our program and setup, we hope to see more adjustments made by anyone willing to do further research! 
