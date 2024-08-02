@@ -61,17 +61,17 @@ To maintain a 94% accuracy rate at increasing distances we have create a recomme
 ## Limitations and Future Work
 Our system provided a comprehensive proof of concept that also revealed several key limitations that should be addressed in future work. 
 
-## Pixel Coverage and Saturation 
+### Pixel Coverage and Saturation 
 One significant limitation is the impact of distance on pixel coverage and detection accuracy. Our findings indicate a notable decrease in accuracy as the subject moves further from the camera, primarily due to a reduction in the number of pixels covering the face. This was likely due to the resolution of our thermal camera and capability to perform at high levels with greater distances. 
 
 To address the camera limitations, upgrading the system’s resolution with higher-resolution cameras could reduce the impact of less pixel coverage at greater distances. 
 
-## Enviroment
+### Enviroment
 This study was conducted in a controlled environment, which does not reflect potential real-world implementations. Factors such as lighting variations, external impacts on temperature (ie. doors opening), multiple subjects and subject movement were controlled so our results are exclusively evaluating accuracy.
 
 Evaluating the system’s usability and effectiveness in real-world settings will be crucial for its successful deployment and ensuring it meets the needs of end users. This may include testing different lighting conditions, using multiple subjects in a frame, and having subjects move around the frame. Understanding how these factors affect pixel coverage and accuracy could educate future adjustments to the system’s design.
 
-## System Training
+### System Training
 Our product used frame by frame temperature detection using a pixel color to temperature equation. While we use MediaPipe which is pre-trained for facial detection, our breathing detection system is very adaptive. A limitation to this approach is that our system is not trained to understand breathing patterns and have the ability to mediate errors.
 
 To address this, future work could explore training data sets to increase accuracy and reliability. This would allow for types of breathing patterns to be better handled and could decrease type II error frequency. It would also allow for better testing effectiveness and make strides towards deployment measures.
