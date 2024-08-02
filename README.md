@@ -37,6 +37,7 @@ In addition to our software detection interface, we created 3D models to hold th
 
 ## Testing
 To test the accuracy of our product, we performed six rounds of breathing exercises at three different distances (1ft, 3ft, 5ft). The tests are structured as follows: 
+
 <img align = "center" width = "300" src="Flowcharts.png">
 
 We recorded the results in a binary confusion matrix and calculated accuracy along with pixel coverage. The confusion matrix also allowed us to easily identify type I and II errors. Testing was consistently done on the same participant to minimize variability. 
@@ -51,7 +52,7 @@ With the individual 2 feet from the camera, we recorded 15 true negatives, 12 tr
 ### 5 Feet Away
 At 5 feet distance from the camera the system detected 16 true negatives, 10 true positives, 8 false positives and 2 false negatives. This produced a 72.2% accuracy rate. Our precision rate is 55.6%, resulting in an 33.3% Type I error frequency. Our recall rate is 83.3% with a 16.7% Type II error frequency. At 5 feet, the individuals face was covering 7,657 pixels which is about 2.5% of the total frame. 
 
-<img align = "center" width = "300" src="ResultsGraph.png">
+<img align = "center" width = "300" src="AcurrarcyRate.png">
 
 ### Disscusion
 Our results demonstrate a marked decrease in accuracy as the distance between the subject and the camera increases. The accuracy decreases as distance increases, as seen from 94% at 1 foot to 75% at 3 feet and finally to 72% at 5 feet. This trend can be linked to the reduction in pixel coverage of the subject's face as the distance increases. The accuracy decrease from 3 feet to 5 feet is less dramatic, indicating a potential saturation point in accuracy deterioration. At this range, the system's accuracy reaches a lower bound, suggesting that further reductions in resolution have diminishing returns. The stabilization in results between 3 feet and 5 feet show that the system's accuracy has already been compromised by reduced detail from pixel coverage, and additional decreases will have progressively smaller impacts on accuracy performance.
