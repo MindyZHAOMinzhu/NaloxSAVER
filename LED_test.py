@@ -35,5 +35,3 @@ finally:
    led_line.release()
 
    chip.close()
-
-‍
