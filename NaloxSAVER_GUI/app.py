@@ -12,9 +12,19 @@ import gpiod
 
 # GPIO setup
 LED_PIN = 17
+SERVO_PIN = 18
 chip = gpiod.Chip('gpiochip4')
 led_line = chip.get_line(LED_PIN)
 led_line.request(consumer="LED", type=gpiod.LINE_REQ_DIR_OUT)
+
+
+# Setup for Servo Motor
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(SERVO_PIN, GPIO.OUT)
+servo = GPIO.PWM(SERVO_PIN, 50)  # 50Hz PWM frequency
+servo.start(0)
+
+
 
 # Function to make LED blink
 def blink_led(duration=5):
@@ -28,7 +38,14 @@ def blink_led(duration=5):
     finally:
         led_line.set_value(0)  # Ensure LED is turned off after blinking
         
-        
+# Function to control Servo Motor
+def set_servo_angle(angle):
+    duty_cycle = 2 + (angle / 18)
+    servo.ChangeDutyCycle(duty_cycle)
+    time.sleep(0.5)
+    servo.ChangeDutyCycle(0)
+    
+      
 app = Flask(__name__)
 secret_key = secrets.token_urlsafe(24)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -190,6 +207,9 @@ def generate_frames():
                                 next_person_id = 0
                                 
                                 blink_led()
+                                # Move servo to indicate detection
+                                set_servo_angle(90)  # Adjust angle as needed
+
                                 
 
                             print(f'Temperature at nose for person {person_id}: {nose_temperature:.2f} °C')
@@ -207,9 +227,13 @@ def generate_frames():
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         
         
+
 # Release GPIO on exit
 def cleanup():
     led_line.release()
+    servo.stop()
+    GPIO.cleanup()
+
 
 @app.route('/')
 def index():
