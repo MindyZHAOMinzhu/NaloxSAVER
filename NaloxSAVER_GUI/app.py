@@ -41,7 +41,7 @@ face_detection = mp_face_detection.FaceDetection(min_detection_confidence=0.5)
 face_mesh = mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=5, min_detection_confidence=0.5)
 
 
-zoom_factor = 0.45
+zoom_factor = 0.4
 offset_y_inches = -0.2
 offset_x_inches = 0.8
 dpi = 30
@@ -51,8 +51,8 @@ offset_x_pixels = int(offset_x_inches * dpi)
 last_extraction_time = time.time()
 
 try:
-    regular_cam = cv2.VideoCapture(0)
-    thermal_cam = cv2.VideoCapture(2)
+    regular_cam = cv2.VideoCapture('/dev/video0')
+    thermal_cam = cv2.VideoCapture('/dev/video2')
 except Exception as e:
     print(f"Error initializing cameras: {e}")
 
