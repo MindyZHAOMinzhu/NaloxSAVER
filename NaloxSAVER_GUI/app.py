@@ -6,10 +6,34 @@ import numpy as np
 import time
 import secrets
 
+
+# 0224
+import gpiod
+
+# GPIO setup
+LED_PIN = 17
+chip = gpiod.Chip('gpiochip4')
+led_line = chip.get_line(LED_PIN)
+led_line.request(consumer="LED", type=gpiod.LINE_REQ_DIR_OUT)
+
+# Function to make LED blink
+def blink_led(duration=5):
+    try:
+        end_time = time.time() + duration  # Blink for the specified duration
+        while time.time() < end_time:
+            led_line.set_value(1)
+            time.sleep(0.5)
+            led_line.set_value(0)
+            time.sleep(0.5)
+    finally:
+        led_line.set_value(0)  # Ensure LED is turned off after blinking
+        
+        
 app = Flask(__name__)
 secret_key = secrets.token_urlsafe(24)
 app.config['SECRET_KEY'] = 'your_secret_key'
 socketio = SocketIO(app)
+
 
 mp_face_detection = mp.solutions.face_detection
 mp_face_mesh = mp.solutions.face_mesh
@@ -17,7 +41,7 @@ face_detection = mp_face_detection.FaceDetection(min_detection_confidence=0.5)
 face_mesh = mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=5, min_detection_confidence=0.5)
 
 
-zoom_factor = 2.45
+zoom_factor = 0.45
 offset_y_inches = -0.2
 offset_x_inches = 0.8
 dpi = 30
@@ -28,7 +52,7 @@ last_extraction_time = time.time()
 
 try:
     regular_cam = cv2.VideoCapture(0)
-    thermal_cam = cv2.VideoCapture(1)
+    thermal_cam = cv2.VideoCapture(2)
 except Exception as e:
     print(f"Error initializing cameras: {e}")
 
@@ -58,9 +82,11 @@ class Person:
                     self.death_detected_count += 1
                     if self.death_detected_count >= 6:  # Require two consecutive detections
                         self.death_detected_count = 0 
+                        
                         return True
             else:
                 self.death_detected_count = 0  # Reset count if temperature data is incomplete
+            
             return False
 
 persons = []
@@ -157,9 +183,14 @@ def generate_frames():
 
                             person.add_temperature(nose_temperature)
                             if person.check_death():
+                                
+                                # 0224
                                 socketio.emit('death_detected', {'person_id': person_id}, namespace='/')
                                 persons = [] 
                                 next_person_id = 0
+                                
+                                blink_led()
+                                
 
                             print(f'Temperature at nose for person {person_id}: {nose_temperature:.2f} °C')
                             cv2.putText(zoomed_frame_resized, f'{nose_temperature:.2f} °C', (nose_center_x, nose_center_y - 10),
@@ -174,6 +205,11 @@ def generate_frames():
 
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
+        
+# Release GPIO on exit
+def cleanup():
+    led_line.release()
 
 @app.route('/')
 def index():
